@@ -23,6 +23,7 @@ import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.cscore.VideoProperty;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.PixelFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.photonvision.common.configuration.CameraConfiguration;
 import org.photonvision.vision.camera.CameraQuirk;
 import org.photonvision.vision.processes.VisionSourceSettables;
@@ -168,6 +170,17 @@ public class GenericUSBCameraSettables extends VisionSourceSettables {
     }
 
     public void setAutoExposure(boolean cameraAutoExposure) {
+        if (!cameraAutoExposure) {
+            for (int i = 0; i < 10; i++) {
+                setAutoExposureImpl(false);
+            }
+        } else {
+            setAutoExposureImpl(true);
+        }
+    }
+
+
+    public void setAutoExposureImpl(boolean cameraAutoExposure) {
         logger.debug("Setting auto exposure to " + cameraAutoExposure);
 
         if (!cameraAutoExposure) {
